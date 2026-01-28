@@ -1,6 +1,6 @@
 # Playwright Cucumber Automation Framework
 
-This project is an automation framework built with Playwright and Cucumber (JavaScript) for the SauceDemo website.
+This project is an automation framework built with Playwright and Cucumber (JavaScript) for the SauceDemo website. It features Page Object Model (POM), cross-browser testing, and parallel execution.
 
 ## 🚀 Installation
 
@@ -20,20 +20,26 @@ This project is an automation framework built with Playwright and Cucumber (Java
    npx playwright install
    ```
 
+4. **Environment Setup**:
+   The project uses a `.env` file for configuration. It is already included in the repository with default values:
+   ```bash
+   BASE_URL=https://www.saucedemo.com/
+   ```
+
 ## 📂 Project Structure
 
-- `pages/`: Implements the **Page Object Model (POM)** pattern. Contains class definitions for each page.
+- `pages/`: Implements the **Page Object Model (POM)**. Locators are defined in the constructor for better readability.
 - `tests_ui/`:
-    - `features/`: Contains Gherkin `.feature` files.
-    - `step_definitions/`: Contains Javascript logic mapping steps to code.
-    - `support/`: Contains hooks (Before/After) and world setup.
-- `cucumber.js`: Cucumber configuration profiles.
-- `package.json`: Contains test scripts and dependencies.
+    - `features/`: Gherkin `.feature` files.
+    - `step_definitions/`: JavaScript logic mapping steps to code.
+    - `support/`: Hooks (Before/After), World setup, and Custom World parameters.
+- `.vscode/`: contains `settings.json` to enable "Go to Definition" for Cucumber steps in VS Code.
+- `cucumber.js`: Configuration profiles for different browsers and environments.
+- `package.json`: Test scripts and dependency management.
 
 ## 🧪 How to Run Tests
 
 ### 1. Run on a single browser
-You can run tests on a specific browser using predefined scripts:
 ```bash
 # Run on Chromium (Default)
 npm run test:chromium
@@ -45,14 +51,27 @@ npm run test:firefox
 npm run test:webkit
 ```
 
-### 3. Run on multiple browsers (Parallel)
-To run tests across browsers simultaneously or use multiple workers:
+### 2. Run Parallel with Multiple Workers
+This splits the scenarios across multiple workers of the same browser (Chromium by default).
 ```bash
+# Run with 3 parallel workers and automatically open the report
+npm run test:parallel:report
+```
 
-# Run chromium, firefox, and webkit concurrently using the 'concurrently' package
+### 3. Run Cross-Browser (Parallel)
+This runs the entire test suite on Chromium, Firefox, and Webkit simultaneously.
+```bash
 npm run test:all
 ```
 
-## 📊 Reports
-After running the tests, an HTML report is typically generated. Check the `reports/` folder (if configured) or the console output for the report link.
+## 🛠 VS Code Setup
+To get the best experience (syntax highlighting and navigation), please install the following extensions:
+- **Cucumber (Gherkin) Full Support**
+- **Cucumber** (Official)
 
+The project includes a `.vscode/settings.json` file that automatically configures these extensions to find the step definitions.
+
+## 📊 Reports
+After running the tests, an HTML report is generated in the `reports/` folder.
+- If you use `npm run test:parallel:report`, the report will open automatically.
+- Otherwise, open `reports/cucumber-report.html` manually in your browser.

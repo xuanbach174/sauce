@@ -4,34 +4,22 @@ const { expect } = require('@playwright/test');
 class ProductsPage extends BasePage {
     constructor(page) {
         super(page);
-    }
-
-    #titleLocator() {
-        return this.page.locator('.title');
-    }
-
-    #inventoryItemsLocator() {
-        return this.page.locator('.inventory_item');
-    }
-
-    #shoppingCartBadgeLocator() {
-        return this.page.locator('.shopping_cart_badge');
-    }
-
-    #shoppingCartLinkLocator() {
-        return this.page.locator('.shopping_cart_link');
+        this.title = this.page.locator('.title');
+        this.inventoryItems = this.page.locator('.inventory_item');
+        this.shoppingCartBadge = this.page.locator('.shopping_cart_badge');
+        this.shoppingCartLink = this.page.locator('.shopping_cart_link');
     }
 
     async getInventoryItemCount() {
-        return await this.#inventoryItemsLocator().count();
+        return await this.inventoryItems.count();
     }
 
     async verifyProductsPageVisible() {
-        await expect(this.#titleLocator()).toBeVisible();
+        await expect(this.title).toBeVisible();
     }
 
     async getAllProducts() {
-        const products = await this.#inventoryItemsLocator().all();
+        const products = await this.inventoryItems.all();
         const productList = [];
         for (const item of products) {
             const name = await item.locator('.inventory_item_name').innerText();
@@ -42,13 +30,13 @@ class ProductsPage extends BasePage {
     }
 
     async addProductToCart(index = 0) {
-        const items = await this.#inventoryItemsLocator().all();
+        const items = await this.inventoryItems.all();
         const addButton = items[index].locator('button[id^="add-to-cart"]');
         await addButton.click();
     }
 
     async addMultipleProducts(count) {
-        const items = await this.#inventoryItemsLocator().all();
+        const items = await this.inventoryItems.all();
         for (let i = 0; i < count; i++) {
             const addButton = items[i].locator('button[id^="add-to-cart"]');
             await addButton.click();
@@ -57,14 +45,14 @@ class ProductsPage extends BasePage {
 
 
     async getCartQuantity() {
-        if (await this.#shoppingCartBadgeLocator().isVisible()) {
-            return await this.#shoppingCartBadgeLocator().innerText();
+        if (await this.shoppingCartBadge.isVisible()) {
+            return await this.shoppingCartBadge.innerText();
         }
         return '0';
     }
 
     async goToCart() {
-        await this.#shoppingCartLinkLocator().click();
+        await this.shoppingCartLink.click();
     }
 }
 

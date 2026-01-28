@@ -15,3 +15,9 @@ Feature: Login, add to Cart and remove from Cart with a random number of items
 
     When I remove a random number of products from the cart
     Then the cart quantity should match the expected number of products
+
+  Scenario: Failing scenario for login test
+    Given I open the SauceDemo website
+    When I login with invalid credentials
+    Then this step should fail because the user is not logged in
+

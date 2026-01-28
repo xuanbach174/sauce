@@ -5,33 +5,27 @@ const { expect } = require('@playwright/test');
 class LoginPage extends BasePage {
   constructor(page) {
     super(page);
-  }
-
-  #usernameInputLocator() {
-    return this.page.locator('#user-name');
-  }
-
-  #passwordInputLocator() {
-    return this.page.locator('#password');
-  }
-
-  #loginButtonLocator() {
-    return this.page.locator('#login-button');
+    this.usernameInput = this.page.locator('#user-name');
+    this.passwordInput = this.page.locator('#password');
+    this.loginButton = this.page.locator('#login-button');
   }
 
   async login(username, password) {
     console.log(`Logging in with user: ${username}`);
-    await this.#usernameInputLocator().fill(username);
-    await this.#passwordInputLocator().fill(password);
-    await this.#loginButtonLocator().click();
+    await this.usernameInput.fill(username);
+    await this.passwordInput.fill(password);
+    await this.loginButton.click();
   }
 
   async navigate() {
-    const url = process.env.BASE_URL;
-    if (!url) {
-      throw new Error('BASE_URL environment variable is not defined!');
+    const url = process.env.BASE_URL || 'https://www.saucedemo.com/';
+    try {
+      console.log(`Navigating to: ${url}`);
+      await this.navigateTo(url);
+    } catch (error) {
+      console.error(`Failed to navigate to ${url}:`, error);
+      throw error;
     }
-    await this.navigateTo(url);
   }
 }
 

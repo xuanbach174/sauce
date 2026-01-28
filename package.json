@@ -11,6 +11,7 @@
     "test:all": "concurrently \"npm run test:chromium\" \"npm run test:firefox\" \"npm run test:webkit\"",
     "test:all-browsers": "npm run test:chromium && npm run test:firefox && npm run test:webkit",
     "test:parallel": "cucumber-js --parallel 3",
+    "test:parallel:report": "npm run test:parallel || start reports/cucumber-report.html",
     "test:report": "node scripts/generate-report.js"
   },
   "keywords": [],

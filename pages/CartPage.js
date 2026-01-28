@@ -4,46 +4,34 @@ const { expect } = require('@playwright/test');
 class CartPage extends BasePage {
     constructor(page) {
         super(page);
-    }
-
-    #cartItemsLocator() {
-        return this.page.locator('.cart_item');
-    }
-
-    #removeButtonLocator() {
-        return this.page.locator('button[id^="remove-"]').first();
-    }
-
-    #checkoutButtonLocator() {
-        return this.page.locator('#checkout');
-    }
-
-    #continueShoppingButtonLocator() {
-        return this.page.locator('#continue-shopping');
+        this.cartItems = this.page.locator('.cart_item');
+        this.removeButton = this.page.locator('button[id^="remove-"]').first();
+        this.checkoutButton = this.page.locator('#checkout');
+        this.continueShoppingButton = this.page.locator('#continue-shopping');
     }
 
     async getCartItemCount() {
-        return await this.#cartItemsLocator().count();
+        return await this.cartItems.count();
     }
 
     async verifyItemsVisible() {
-        const count = await this.#cartItemsLocator().count();
+        const count = await this.cartItems.count();
         expect(count).toBeGreaterThan(0);
     }
 
     async verifyButtonsEnabled() {
-        await expect(this.#removeButtonLocator()).toBeEnabled();
-        await expect(this.#checkoutButtonLocator()).toBeEnabled();
-        await expect(this.#continueShoppingButtonLocator()).toBeEnabled();
+        await expect(this.removeButton).toBeEnabled();
+        await expect(this.checkoutButton).toBeEnabled();
+        await expect(this.continueShoppingButton).toBeEnabled();
     }
 
     async removeProduct() {
-        await this.#removeButtonLocator().click();
+        await this.removeButton.click();
     }
 
     async removeMultipleProducts(count) {
         for (let i = 0; i < count; i++) {
-            await this.#removeButtonLocator().click();
+            await this.removeButton.click();
         }
     }
 

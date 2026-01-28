@@ -61,3 +61,13 @@ When('I remove a random number of products from the cart', async function () {
     this.attach(`Removing ${randomCount} random products from cart`);
     await this.cartPage.removeMultipleProducts(randomCount);
 });
+
+When('I login with invalid credentials', async function () {
+    await this.loginPage.login('invalid_user', 'wrong_password');
+});
+
+Then('this step should fail because the user is not logged in', async function () {
+    // This will fail because after a failed login, we are still on the login page
+    // and the products page title will not be visible.
+    await this.productsPage.verifyProductsPageVisible();
+});
